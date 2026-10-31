@@ -1,0 +1,67 @@
+{
+  "file": "test_signal.wav",
+  "sample_rate": 48000,
+  "channels": 2,
+  "duration_s": 20.0,
+  "integrated_lufs": -12.27,
+  "sample_peak_dbfs": 0.0,
+  "true_peak_dbtp": 1.09,
+  "headroom_db": -1.09,
+  "rms_dbfs": -14.06,
+  "crest_factor_db": 14.06,
+  "lra_lu": 10.51,
+  "clipped_samples": 53,
+  "band_energy_db_rel": {
+    "sub": -31.62,
+    "bass": -1.16,
+    "low_mid": -15.81,
+    "mid": -7.0,
+    "high_mid": -23.98,
+    "air": -24.48
+  },
+  "stereo_correlation": 0.991,
+  "side_to_mid_ratio": 0.067,
+  "suggestions": {
+    "platform_target": {
+      "platform": "spotify",
+      "integrated_lufs": -14.0,
+      "true_peak_ceiling_dbtp": -1.0
+    },
+    "loudness_change_needed_db": -1.7,
+    "garageband_master_chain": [
+      {
+        "slot": 1,
+        "plugin": "Channel EQ",
+        "moves": [
+          {
+            "type": "none",
+            "why": "Balance looks fine; leave EQ flat."
+          }
+        ]
+      },
+      {
+        "slot": 2,
+        "plugin": "Compressor",
+        "settings": {
+          "bypass": true,
+          "why": "Dynamics already controlled."
+        }
+      },
+      {
+        "slot": 3,
+        "plugin": "Adaptive Limiter",
+        "settings": {
+          "gain_db": 0.0,
+          "out_ceiling_db": -1.0,
+          "why": "Raises loudness ~0.0 dB toward -14.0 LUFS while keeping peaks under -1.0 dBTP."
+        }
+      }
+    ],
+    "export": "Share > Export Song to Disk: WAV/AIFF, 24-bit, then re-run this analyzer on the export.",
+    "notes": [
+      "Clipping found: lower the mix (track/master volume) before mastering; a limiter can't undo clipped samples.",
+      "True peak above -1 dBTP: streaming encoders may distort it. The Adaptive Limiter output ceiling will fix this.",
+      "Already about 1.7 dB louder than the -14.0 LUFS target: the service will turn it down. Don't add limiter gain; optionally lower the Master Volume about 1.7 dB (or leave it if you like the sound), and keep the -1.0 dB ceiling."
+    ]
+  }
+}

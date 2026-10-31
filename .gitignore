@@ -1,0 +1,4 @@
+*.db
+backup/
+*.csv
+__pycache__/

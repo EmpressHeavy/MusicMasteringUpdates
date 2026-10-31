@@ -5,6 +5,8 @@ You are an installed Music Mastering bot. You got here one of two ways. Read all
 - **B. Fresh install or repair:** your owner pasted this repo's link and asked you to install or repair yourself from it. Follow the guardrails, then steps 1 to 8.
 
 ## A. Automatic update (newer VERSION)
+**v1 → v2 notes:** install `analysis/genre_presets.py` and the new `garageband/gb_control.py` into /workspace/mastering/tools, `pip install pedalboard` in the venv if missing, replace `mastering-session` and `mastering-getting-started`, add `music-distribution`. New optional settings for existing owners, offered as ONE card, off unless they say yes: **Let me do the mastering on your Mac** (then run setup steps M1–M4) and **Release help**. Existing owners who keep them off stay in guided mode.
+
 1. Snapshot (step 1) and back up to the owner's chosen backup.
 2. Re-run steps 1b to 4, 5b and 6 to 8 for whatever changed in CHANGELOG.md: replace skills, scripts, and routine prompts with the new versions, and run the records `init` (it only adds tables). Don't re-ask setup questions they already answered. Keep their routines' times and their settings exactly as they are.
 3. A **new optional setting** in this version: send one tap-button card offering it, off unless they say yes.
@@ -35,13 +37,14 @@ Run these in Shell on your own computer; no sudo needed. Stop and tell the owner
 ## 2. Install skills
 Copy each `skills/<name>/SKILL.md` (plus files beside it) into your skills, replacing older versions of the same skill only:
 - `mastering-getting-started` (first-run setup)
-- `mastering-session` (analyze, guide click by click, offline fallback and reimport, verify, record)
+- `mastering-session` (v2: genre, project copy, plug-ins on the owner's Mac via UI scripting, Youlean, export/measure/iterate, listen + notes, hand back; guided and offline fallbacks)
+- `music-distribution` (optional release help; approval at every submit step)
 - `private-memory-db` (`~/memory/gb/brain.db` + `gbmem` CLI)
 - `hive-mind` (client; ON by default for new setups; on updates the owner's existing on/off choice is kept). Install the client from `hive/hive.py` per `hive/README.md`.
 Remove nothing else.
 
 ## 3. Records store
-- Download `records/gb_db.py` to `/workspace/mastering/gb_db.py`, and `analysis/analyze.py`, `analysis/make_test_signal.py`, `garageband/gb_control.py`, `garageband/ui_scripts.applescript` to `/workspace/mastering/tools/` (raw base: https://raw.githubusercontent.com/EmpressHeavy/MusicMasteringUpdates/main/). Run `python3 /workspace/mastering/gb_db.py init`. It only adds missing tables and records schema_version; existing rows are untouched. `restore <dir>` is additive.
+- Download `records/gb_db.py` to `/workspace/mastering/gb_db.py`, and `analysis/analyze.py`, `analysis/genre_presets.py`, `analysis/make_test_signal.py`, `garageband/gb_control.py`, `garageband/ui_scripts.applescript` to `/workspace/mastering/tools/` (raw base: https://raw.githubusercontent.com/EmpressHeavy/MusicMasteringUpdates/main/). Run `python3 /workspace/mastering/gb_db.py init`. It only adds missing tables and records schema_version; existing rows are untouched. `restore <dir>` is additive.
 
 ## 4. Memory
 Set up `~/memory/gb/brain.db` with private-memory-db if missing. Save what you already know about the owner with `gbmem`. Never store passwords, PINs, tokens, or SSNs.

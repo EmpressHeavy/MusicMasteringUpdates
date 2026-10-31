@@ -1,6 +1,6 @@
 # MusicMasteringUpdates
 
-The official update source for the **Music Mastering for GarageBand** Grok Bot: it analyzes a finished mix and walks you click by click through mastering it in GarageBand, with an offline fallback you reimport.
+The official update source for the **Music Mastering for GarageBand** Grok Bot: it masters your GarageBand songs on your own Mac (project copy, genre-based GarageBand plug-ins, Youlean metering, export, measure, iterate), takes your listening notes, hands back the finished track, and can help you release it. Guided-click and offline fallbacks included.
 
 ## For owners
 Updates are **automatic and always on**: once a week the bot checks this repo and, if there's a newer version, updates itself and sends you a short "Music Mastering updated to vN, here's what's new" note. This is built in and can't be switched off (you can move the time it runs).

@@ -1,4 +1,4 @@
-# Parity map (v1, modeled on DOGE v11)
+# Parity map (v2, modeled on DOGE v11)
 | Component | Repo location |
 |---|---|
 | Agent profile (name, title, description, welcome message, avatar shape/color) | `profile/profile.json`, `profile/welcome_message.txt` (generic for any owner) |
@@ -7,8 +7,11 @@
 | First-run setup flow and all setup cards | `skills/mastering-getting-started/SKILL.md` |
 | "Have you used Music Mastering before?" card | setup question 2 |
 | Track analysis (LUFS, true peak, clipping, bands, crest, LRA, width, suggestions) | `analysis/analyze.py`, `analysis/make_test_signal.py`, `analysis/test_report.json` |
-| Mastering session: guided GarageBand steps, offline fallback + reimport, verify | `skills/mastering-session/SKILL.md` |
-| Mac helper scripts (optional, approval each run) and offline render | `garageband/gb_control.py`, `garageband/ui_scripts.applescript`, `docs/FEASIBILITY.md` |
+| Mastering session: genre question, project copy, plug-in chains via UI scripting, Youlean, export/measure/iterate, listen + revision notes, hand back, guided + offline fallbacks | `skills/mastering-session/SKILL.md` |
+| Genre presets (targets, EQ/compressor/limiter plans, vocal/track chains, pass/fail check) | `analysis/genre_presets.py` |
+| Mac setup (ListMachines, preflight, Accessibility/Screen Recording, Youlean install) | `skills/mastering-getting-started/SKILL.md` question 4 (M1–M4) |
+| Release help (optional, approval at every submit) | `skills/music-distribution/SKILL.md` |
+| Mac control layer (preflight, copy-project, UI scripting, screenshots, export, measure; approval each run) and offline render | `garageband/gb_control.py`, `garageband/ui_scripts.applescript`, `docs/FEASIBILITY.md` |
 | Records store (sessions, analyses, settings, prefs) | `records/gb_db.py` |
 | Persona and tone | `docs/persona.md` |
 | Dependencies and install | `UPGRADE.md` step 1b |

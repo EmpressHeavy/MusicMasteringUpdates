@@ -1,19 +1,25 @@
-# GarageBand control — feasibility (researched 2026-10-31)
-Constraint: the Grok Bot box is Linux. Anything GarageBand-side runs on the owner's Mac via machine-targeted Shell (`osascript`), each with approval, and needs Accessibility + Automation permission.
+# Feasibility (v2): doing the mastering on the owner's Mac
 
-| Rank | Option | Feasible? | Notes |
+GarageBand has **no real scripting API**. Its AppleScript dictionary exposes almost nothing useful (no tracks, plug-ins or parameters). So v2 drives the GarageBand UI like a person would, through Grok Bot's machine-targeted Shell on the owner's Mac (ListMachines → machineId; **the owner approves each command**).
+
+| Step | How | Reliability | Verification / fallback |
 |---|---|---|---|
-| 1 | **Analyze on box + guided manual steps** | Yes, robust | Analyzer gives exact Channel EQ / Compressor / Adaptive Limiter values; owner clicks. Zero fragility. |
-| 2 | **Offline processing (pedalboard / ffmpeg) then reimport** | Yes | pedalboard has Gain/Compressor/Limiter/filters, loads VST3 (all OS) and Audio Units (macOS only, must be in ~/Library/Audio/Plug-Ins/Components; some AUs fail to scan — VST3 safer). Apple's built-in GB plugins aren't separately loadable this way. Its Limiter isn't true-peak: re-verify. |
-| 3 | **Open project / launch (`open -a GarageBand`)** | Yes | Trivial shell. |
-| 4 | **UI scripting via System Events (menus, keystrokes)** | Partly | Menu clicks like Share > Export Song to Disk work but break across versions/languages; dialogs need delays and sheet handling. |
-| 5 | **UI scripting plugin parameters (knobs in plugin windows)** | Poor | Requires deep AX paths; plugin windows expose little. A community MCP bridge (garageband-llm-bridge) exposes tracks/Smart Controls/menus via AX, not full plugin parameters. |
-| 6 | **AppleScript/JXA dictionary** | No | Only `renderPreview` is exposed. |
-| 7 | **Logic Pro instead** | Better results, not better scripting | Has Mastering Assistant (auto EQ/loudness/width, Character presets) on Stereo Out; GarageBand does not. Opens GB projects. Scripting still UI-based. |
-| 8 | **MIDI control surface / Logic-style control** | Not researched in depth; unverified | GarageBand's control-surface support is limited; treat as experimental. |
-| 9 | **AUv3 hosting** | Not a control path | GB hosts 64-bit AUs (32-bit unsupported); a custom AU could do mastering inside GB but is a large build. |
+| Find projects, copy `.band` | `mdfind`/`find`, `ditto` to `~/MusicMastering/copies/<song> - master <ts>.band`, refuse if it exists, compare file counts | **High** (plain files) | `COPY_OK`; the original is never opened |
+| Inspect `.band` | read-only `find` / `plutil -p` on metadata plists, list Media | High (read-only) | `projectData` is private binary: **never edited** |
+| Open copy, confirm it's the copy | `open -a GarageBand`, read the front window title | High | `FRONT_OK` gate before every edit/save |
+| Menus (Show Master Track, Export) | System Events menu clicks, prefix match (`…` vs `...`), ⌘⇧M | Medium-high (names vary by version and language) | `menus` discovery first, `CLICKED:` marker, screenshot |
+| Insert plug-ins into slots | AX clicks on slot buttons and pop-up menus from `ax-dump` | **Low-medium** (unlabeled buttons, layout changes between versions) | screenshot after each; retry once, then the owner clicks (guided) |
+| Set plug-in parameters | AX sliders in the plug-in's generic **Controls** view, `ax-act set`, read back value | **Low/unverified** (custom plug-in UIs often expose no AX sliders; Channel EQ graphic view is not scriptable) | read-back value + screenshot; else guided values |
+| Export Song to Disk | Share menu, sheet text field + Export button, wait for a stable file | Medium (sheet layout varies; format pop-up) | first run: screenshot the sheet; `EXPORT_FILE=` or timeout |
+| Measure | CopyToBox then `analyze.py` (pyloudnorm, 4× true peak) on the bot's computer; optional `ffmpeg ebur128` on the Mac | **High** | `genre_presets.py check` pass/fail |
+| Youlean Loudness Meter 2 (free AU) | inserted last on the Master Track, played through, screenshot read | Medium (UI may not show in GarageBand until a preference is changed; needs playback) | cross-check only; the box measurement decides |
+| Screenshots | `screencapture -x` | High once Screen Recording is granted | wallpaper-only image = permission missing |
+| Offline fallback | `offline_master` (pedalboard gain + limiter + true-peak trim, 24-bit) then reimport into the copy | High | re-analyze; owner drags in for A/B |
+| Release help | browser, owner's distributor account | Medium | approval at every submit; tax/banking/payments only with explicit yes |
 
-**Targets:** Spotify/YouTube ≈ -14 LUFS integrated, Apple Music ≈ -16 LUFS, true peak ≤ -1 dBTP (references for playback normalization, not hard rules).
+**Permissions needed on the Mac:** Accessibility (UI scripting), Automation (prompt: control System Events/GarageBand), Screen Recording (screenshots), all for the app that runs Grok Bot's commands. Python on the Mac is **not** required (a bare Mac can pop up an Xcode tools prompt), so commands are pure shell + osascript.
+
+**Untested so far (needs a real Mac):** every osascript/System Events step, AX element names and slider exposure, the export sheet, screencapture, Youlean inside GarageBand, `ditto` copy and `.band` inspection on current GarageBand, and the release flow. The skill asks the bot to record what worked per GarageBand version in memory and Hive Mind lessons so this hardens over time.
 
 ## Sources (fetched via search this session)
 - https://github.com/extao15/garageband-llm-bridge — only `renderPreview` in dictionary; needs Automation + Accessibility

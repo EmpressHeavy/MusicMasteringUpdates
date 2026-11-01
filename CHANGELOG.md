@@ -1,5 +1,8 @@
 # Changelog
 
+## 3
+- **Updates itself right at install.** New `updater/updater.py` checks this repo on first setup (Step 1b), then updates only the code and skill files in `MANIFEST.json`. It saves a snapshot first and rolls back if anything fails. Your records, memory, backups, and settings are never touched, and new settings arrive off. The weekly update check stays as a backup.
+
 ## 2
 - **Does the work on your Mac now.** The session asks the genre, copies your GarageBand project (the original is never touched), opens the copy, and sets up GarageBand's own plug-ins: vocal and track chains (Channel EQ, Compressor, DeEsser 2) plus the Master Track (Channel EQ → Compressor → Adaptive Limiter at -1 dBTP → Youlean meter). Then it exports, measures, and iterates until the master passes.
 - New `analysis/genre_presets.py`: 11 genres plus aliases, platform/genre loudness targets (quieter for jazz, acoustic, spoken and classical), EQ/compressor/limiter plans, and a pass/fail `check`.

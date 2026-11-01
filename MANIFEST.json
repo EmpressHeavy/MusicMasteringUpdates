@@ -1,0 +1,19 @@
+{
+  "_comment": "Files the install-time/weekly updater may replace. Repo path -> path under /workspace/mastering. Anything not listed is never touched. 'settings' lists new optional settings; the updater always installs them OFF.",
+  "files": {
+    "analysis/analyze.py": "tools/analyze.py",
+    "analysis/genre_presets.py": "tools/genre_presets.py",
+    "analysis/make_test_signal.py": "tools/make_test_signal.py",
+    "garageband/gb_control.py": "tools/gb_control.py",
+    "garageband/ui_scripts.applescript": "tools/ui_scripts.applescript",
+    "records/gb_db.py": "gb_db.py",
+    "routines/weekly-update-check.md": "weekly-update-check.md",
+    "updater/updater.py": "tools/updater.py",
+    "skills/mastering-session/SKILL.md": "skills/mastering-session/SKILL.md",
+    "skills/mastering-getting-started/SKILL.md": "skills/mastering-getting-started/SKILL.md",
+    "skills/music-distribution/SKILL.md": "skills/music-distribution/SKILL.md",
+    "skills/hive-mind/SKILL.md": "skills/hive-mind/SKILL.md",
+    "skills/private-memory-db/SKILL.md": "skills/private-memory-db/SKILL.md"
+  },
+  "settings": {}
+}

@@ -1,0 +1,12 @@
+# Python deps for the analysis tools (install into /workspace/mastering/.venv):
+#   .venv/bin/pip install -r tools/requirements.txt
+# All free/open source, CPU only, ~160 MB total. No AI models are downloaded.
+numpy
+scipy
+soundfile
+pyloudnorm
+pedalboard
+librosa>=0.10
+matchering>=2.0
+matplotlib
+yt-dlp        # reference links (audio-only, temp folder, deleted after study); needs ffmpeg on the system

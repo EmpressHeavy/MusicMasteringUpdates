@@ -13,7 +13,11 @@
     "skills/mastering-getting-started/SKILL.md": "skills/mastering-getting-started/SKILL.md",
     "skills/music-distribution/SKILL.md": "skills/music-distribution/SKILL.md",
     "skills/hive-mind/SKILL.md": "skills/hive-mind/SKILL.md",
-    "skills/private-memory-db/SKILL.md": "skills/private-memory-db/SKILL.md"
+    "skills/private-memory-db/SKILL.md": "skills/private-memory-db/SKILL.md",
+    "analysis/headspace.py": "tools/headspace.py",
+    "analysis/reference_match.py": "tools/reference_match.py",
+    "analysis/requirements.txt": "tools/requirements.txt",
+    "analysis/beat_study.py": "tools/beat_study.py"
   },
   "settings": {}
 }

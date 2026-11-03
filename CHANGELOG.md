@@ -1,5 +1,12 @@
 # Changelog
 
+## 4
+- **"Ears" for the bot.** New `analysis/headspace.py` turns a WAV into a JSON report plus pictures the bot can look at: a spectrogram, pan per frequency band over time, mid/side and correlation per band, correlation over time, a goniometer, and a rough depth/reverb estimate. It also writes plain-language lines like "vocal range centered and solid" or "bass is wide; center it".
+- **Reference match.** New `analysis/reference_match.py` uses the open-source Matchering tool to match your mix to a reference song you own (tone, loudness, width). It writes a new 24-bit WAV, never overwrites your files, then compares before and after in plain words. You still listen and decide.
+- **References from a file or a link.** References can be an audio file you have (WAV/MP3...) or a public link (YouTube etc., fetched audio-only with yt-dlp). They're used for study only: the reference audio is deleted right after analysis and only numbers and pictures are kept.
+- **Beat study.** New `analysis/beat_study.py` dissects a reference's groove: tempo, key, time signature, swing, a typical 16-step kick/snare/hat bar, sound palette (808/sub, pads, plucks, brightness), and intro/build/drop sections. It writes a drum-grid picture and GarageBand build notes. It borrows the feel, never the melody or hook.
+- New `analysis/requirements.txt` (librosa, matchering, matplotlib, yt-dlp; all free and CPU-only). The session skill now says when to run each tool.
+
 ## 3
 - **Updates itself right at install.** New `updater/updater.py` checks this repo on first setup (Step 1b), then updates only the code and skill files in `MANIFEST.json`. It saves a snapshot first and rolls back if anything fails. Your records, memory, backups, and settings are never touched, and new settings arrive off. The weekly update check stays as a backup.
 

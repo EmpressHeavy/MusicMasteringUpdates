@@ -9,7 +9,7 @@ description: >-
   to guided clicks or offline processing when UI scripting fails. Use whenever the
   owner sends a song or project, asks to master a song, or asks why a master sounds off.
 ---
-# Mastering session (v2: I do the work on your Mac)
+# Mastering session (v4: I do the work on your Mac, with "ears")
 
 **Tools on this bot's computer:** `A=/workspace/mastering/.venv/bin/python`, `T=/workspace/mastering/tools`
 - analyzer `$A $T/analyze.py`
@@ -43,6 +43,15 @@ Tone: warm, plain words, never shame a mix. Numbers first, then what they mean. 
 2. Make sure the Master Track has no effects (or record what's there). Then **export the raw mix**: `export "<song> - master v0"`, which waits for `EXPORT_FILE=`. The first time, screenshot the export sheet and check the format is **WAV** (or AIFF/Uncompressed), **24-bit**. If not, set it via `ax-dump` + `ax-act` on the pop-up, or ask the owner to pick it once.
 3. CopyToBox the exported file into /workspace/mastering/in/, then `$A $T/analyze.py in/<file> --target <t> --out pre.json` and `gb_db.py add-track-analysis --session <id> --title "<title>" --json pre.json --stage pre`.
 4. If `clipped_samples` > 0 or the sample peak ≥ 0 dBFS, the fix is in the mix: lower the loudest track's volume (guided or via `ax-act` on that track's volume slider) and re-export v0.
+
+## 2b. Ears: headspace, reference match, beat study (v4)
+I can't hear, so I measure and look. If `tools/headspace.py` is missing deps, run `.venv/bin/pip install -r tools/requirements.txt` (about 150 MB, CPU only).
+- **Run headspace** on the baseline bounce, on every export in step 6, and whenever the owner says something about space ("vocal buried", "too wide", "muddy", "sounds weird on my phone"): `.venv/bin/python tools/headspace.py FILE --outdir out/NAME_headspace`. Read the summary lines and open `pan_map.png`, `midside.png` and `correlation.png` before suggesting width, pan or reverb changes. Flag a wide bass/sub, low-correlation bands, and out-of-phase stretches. Treat depth/reverb as a rough hint only.
+- **References (study only).** The owner can give a reference as (a) a WAV/MP3/other audio file they have, or (b) a public link (YouTube etc.). It's for studying and dissecting only: analysis plus matching the tone, loudness and width of the owner's own mix. Never copy, upload, release or hand back the reference audio. For links, the tools fetch audio-only with yt-dlp into a temp folder (no playlists, 10 min max). The decoded reference audio is deleted right after analysis and only numbers and images are kept. The owner's own reference file is never modified or deleted. Tell the owner in one line: "I'll use this reference only to study it; I delete its audio after analysis and keep just the numbers and pictures."
+- **Run reference match** when the owner wants their mix to sound "like" a reference: `.venv/bin/python tools/reference_match.py MIX REF_FILE_OR_LINK --out out/NAME_matched.wav`. Share the before/after lines, offer the matched WAV as an option (not the default), and say it copies tone, loudness and width, not taste. If the matched true peak is above -1 dBTP, limit it before handing it back.
+- **Run beat study** when the owner wants to build a beat inspired by a reference: `.venv/bin/python tools/beat_study.py REF_FILE_OR_LINK --outdir out/NAME_beat`. It gives tempo, key, time signature, swing, a typical 16-step drum bar (kick/snare/hats), sound palette (808/sub, pads, plucks, brightness), section structure, and GarageBand build notes (kit, BPM, and Piano Roll steps: a drum kit track, a one-bar MIDI region, Cycle on, 1/16 grid. GarageBand for Mac has no Step Sequencer, so never tell the owner to use one). Open `drum_grid.png` and `structure.png` before you explain it. Results are solid on clean loops and rough on dense full mixes, so say so.
+- **Inspiration, not copying.** Borrow the feel, groove, tempo, palette and arrangement shape. Never recreate the reference's melody, vocal hook, lyrics or samples note-for-note. Suggest changing some drum steps and sounds so the beat is the owner's own.
+- All three tools only read inputs and write new files under `out/`. Never overwrite the owner's audio.
 
 ## 3. Plan from the genre preset
 `$A $T/genre_presets.py plan <genre> pre.json --platform <t> --out plan.json`. It gives:
